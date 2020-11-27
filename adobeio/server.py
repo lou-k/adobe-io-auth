@@ -122,7 +122,7 @@ def main():
     # Start the server
     port = redirect_uri.port
     if not port:
-        port = '80'
+        port = '443'
     app.run(redirect_uri.hostname, port, debug=args.debug,
             ssl_context=(args.cert, args.key))
 
