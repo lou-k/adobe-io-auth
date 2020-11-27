@@ -120,7 +120,10 @@ def main():
         app.secret_key = os.urandom(16)
 
     # Start the server
-    app.run(redirect_uri.hostname, redirect_uri.port, debug=args.debug,
+    port = redirect_uri.port
+    if not port:
+        port = '80'
+    app.run(redirect_uri.hostname, port, debug=args.debug,
             ssl_context=(args.cert, args.key))
 
 if __name__ == '__main__':
