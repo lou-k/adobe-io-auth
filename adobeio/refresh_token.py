@@ -37,7 +37,7 @@ def main():
 
     # If not, exit.
     if not is_expired:
-        logging.info('Token does not expire until ' + expires)
+        logging.info('Token does not expire until ' + str(expires))
         return
 
     # Otherwise refresh it
