@@ -1,0 +1,8 @@
+# Runs the adobe auth server as a service.
+# Edit the `adobe-io-server` command below to specify the location of your app config and cert/key files
+[Unit]
+Description=Adobe Authentication Server
+
+[Service]
+ExecStart=/usr/local/bin/adobe-io-server
+Type=simple
