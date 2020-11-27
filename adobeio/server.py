@@ -22,7 +22,7 @@ def home():
 @app.route('/authorize')
 def authorize():
     authorization_url = app.config['ims_client'].generate_authorize_url(
-        app.config['scopes'], flask.url_for('callback', _external=True))
+        app.config['scopes'], app.config['DEF_REDIRECT_URI'])
 
     # This will prompt users with the approval page if consent has not been given
     # Once permission is provided, users will be redirected to the specified page
