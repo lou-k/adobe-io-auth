@@ -1,0 +1,2 @@
+graft adobeio/templates
+global-exclude *.pyc
