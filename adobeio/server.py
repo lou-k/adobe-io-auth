@@ -22,7 +22,7 @@ def home():
 @app.route('/authorize')
 def authorize():
     authorization_url = app.config['ims_client'].generate_authorize_url(
-        app.config['scopes'], app.config['DEF_REDIRECT_URI'])
+        app.config['scopes'], app.config['DEF_REDIRECT_URI'] + '/callback')
 
     # This will prompt users with the approval page if consent has not been given
     # Once permission is provided, users will be redirected to the specified page
@@ -92,6 +92,10 @@ def main():
                         help='The flask secret to use. If unset, a random one is generated')
     parser.add_argument('-s', '--scopes', type=str, default='openid,creative_sdk',
                         help='The scopes to request for the app.')
+    parser.add_argument('--host', type=str, default='localhost',
+                        help='The host to start the server on.')
+    parser.add_argument('-p', '--port', type=str, default='443',
+                        help='The port to start the server on.')
     parser.add_argument('-d', '--debug', dest='debug',
                         help='Sets the flask app to debug mode', action='store_true')
     parser.add_argument('-o', '--output', default=None,
@@ -111,19 +115,13 @@ def main():
     app.config['ims_client'] = IMS(
         app.config['API_KEY'], app.config['CLIENT_SECRET'])
 
-    # Determine the host and port from the callback setting
-    redirect_uri = urllib.parse.urlparse(app.config['DEF_REDIRECT_URI'])
-
     if args.secret:
         app.secret_key = args.secret
     else:
         app.secret_key = os.urandom(16)
 
     # Start the server
-    port = redirect_uri.port
-    if not port:
-        port = '443'
-    app.run(redirect_uri.hostname, port, debug=args.debug,
+    app.run(args.host, args.port, debug=args.debug,
             ssl_context=(args.cert, args.key))
 
 if __name__ == '__main__':
