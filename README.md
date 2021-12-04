@@ -12,7 +12,7 @@ pip install .
 
 ## Server Usage
 
-* First, make sure you have generated the OpenSSL certs as specified by the [adobe example](https://github.com/AdobeDocs/adobeio-auth/tree/stage/OAuth/samples/adobe-auth-python#createanopensslcert)
+* First, make sure you have generated the OpenSSL certs as specified by the [adobe example](https://github.com/AdobeDocs/adobeio-auth/tree/stage/OAuth/samples/adobe-auth-python#createanopensslcert) (or use [this handy guide](https://betterprogramming.pub/trusted-self-signed-certificate-and-local-domains-for-testing-7c6e6e3f9548) to self-sign and install your root cert).
 * Go to your project page on https://console.adobe.io/ and click the `Download` button to save your app's config to disk.
 * Launch the server:
 ```console
