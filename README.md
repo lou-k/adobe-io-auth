@@ -6,21 +6,62 @@ It's based off of the [Adobe's python example](https://github.com/AdobeDocs/adob
 This code is helpful if, like me, you're hitting Adobe API's for a hobby projects and you don't intend to have any extra users of your project.
 
 ## Installation
-```console
+
+
+
+## Installation
+From the repository:
+```
 pip install .
 ```
 
-## Server Usage
+As a package:
+```
+pip install git+https://github.com/lou-k/adobe-io-auth.git@VERSION
+```
 
-* First, make sure you have generated the OpenSSL certs as specified by the [adobe example](https://github.com/AdobeDocs/adobeio-auth/tree/stage/OAuth/samples/adobe-auth-python#createanopensslcert) (or use [this handy guide](https://betterprogramming.pub/trusted-self-signed-certificate-and-local-domains-for-testing-7c6e6e3f9548) to self-sign and install your root cert).
-* Go to your project page on https://console.adobe.io/ and click the `Download` button to save your app's config to disk.
-* Launch the server:
+## Generating an Acess Token
+
+
+### Configuring Your Project
+First, create a new project at https://developer.adobe.com/console/ with the scopes that you need.
+
+Next, go to the "OAuth Web" page and set the redirect URI to `https://localhost:8443`.
+
+Third, go to the project's page, and click "Download" to get the json file with `CLIENT_SECRET`, `API_KEY`, etc.
+
+### Generate the SSL Certs
+
+Run the following in your root directory:
+
+```
+$ openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+```
+
+(see [adobe example](https://github.com/AdobeDocs/adobeio-auth/tree/stage/OAuth/samples/adobe-auth-python#createanopensslcert) for more info or use [this handy guide](https://betterprogramming.pub/trusted-self-signed-certificate-and-local-domains-for-testing-7c6e6e3f9548) to self-sign and install your root cert).
+
+### Launch the Server
+
+Launch the server:
 ```console
-adobe-io-server --config your_downloaded_file.json --debug
+adobe-io-server -c <your_downloaded_file.json> -c <scopes> -o token.json
+```
+
+or if running without installing:
+
+```
+PYTHONPATH=. python -m adobeio.server -c <your_downloaded_file.json> -p 8443 -s <scopes> -o token.json
+```
+
+Where:
+`<scopes>` is a comma-separated list of scopes you need for your application.
+
+So, for example, to get access to lightroom:
+```
+PYTHONPATH=. python -m adobeio.server -c <your_downloaded_file.json> -p 8443 -s openid,offline_access,lr_partner_apis -o token.json
 ```
 
 The flask server will attempt to launch on the url specified in the `DEF_REDIRECT_URI` field of your project. Visit that URL in your browser to authenticate.
-
 
 ## Features
 * If you specify a file in the `--output` option, the app will save the user token there. This is useful if you're developing an app or using it in a hobby project.

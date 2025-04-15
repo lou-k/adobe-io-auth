@@ -47,7 +47,7 @@ class IMS:
             'response_type': response_type,
             'redirect_uri': redirect_uri
         }
-        return self.base + 'authorize/v2?' + urllib.parse.urlencode(params)
+        return self.base + 'authorize?' + urllib.parse.urlencode(params)
 
     def _token(self, **kwargs):
         params = {
